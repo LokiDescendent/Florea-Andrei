@@ -1,0 +1,334 @@
+LAB 9 I.1
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int info;
+    struct node * next;
+    struct node * prev;
+};
+int i;
+
+void display( struct node * p );
+int lengthSearch( struct node * p );
+void swap( int *a , int *b );
+void insertionSort( struct node * p );
+
+int main()
+{
+
+    struct node * p = (struct node *) malloc( sizeof( struct node) );
+    p -> next = NULL;
+    p -> prev = NULL;
+    p -> info = rand() % 23;
+
+    struct node * head = p;
+
+    for( i = 0 ; i < 6 ; i++ )
+    {
+        struct node * newEl = (struct node *) malloc( sizeof( struct node) );
+        newEl -> next = NULL;
+        newEl -> prev = p;
+        newEl -> info = rand() % 23;
+
+        p -> next = newEl;
+        p = newEl;
+    }
+    printf( "In this moment, the list looks like: " );
+    display( head );
+
+
+
+    p = head;
+
+
+    int length = lengthSearch( p );
+    struct node * arrow;
+
+    for( i = 1 ; i < length ; i++ )
+    {
+        p = p -> next;
+        arrow = p;
+
+        while( arrow -> prev  &&  (arrow -> prev -> info) >  (arrow -> info) )
+        {
+            int aux;
+            aux = arrow -> prev -> info;
+            arrow -> prev -> info = arrow -> info;
+            arrow -> info = aux;
+
+            arrow = arrow -> prev;
+        }
+    }
+
+    display( head );
+
+    return 0;
+}
+
+void display( struct node * p )
+{
+    while( p )
+    {
+        printf( "\n%d", p -> info );
+        p = p -> next;
+    }
+}
+
+int lengthSearch( struct node * p )
+{
+    int length = 0;
+    while( p )
+    {
+        length++;
+        p = p -> next;
+    }
+    return length;
+}
+
+
+I.2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int *ar;
+int i;
+int length;
+int noSearch;
+
+int main()
+{
+    printf( "Enter the length of the string: \n" );
+    scanf( "%d" , &length );
+
+    ar = ( int* ) malloc( length * sizeof( int ) );
+
+    printf( "Enter the string (sorted): \n" );
+    for( i = 0; i < length; i++ )
+        scanf( "%d" , (ar + i) );
+
+    printf( "Enter the searched number: \n" );
+    scanf( "%d" , &noSearch );
+
+    int left = 0;
+    int right = length - 1;
+
+    while( left <= right )
+    {
+        int middle = (left + right) / 2;
+
+        if( *(ar + middle) > noSearch )
+            right = middle - 1;
+        if( *(ar + middle) < noSearch )
+            left = middle + 1;
+        if( *(ar + middle) == noSearch )
+        {
+            printf( "The index is: %d\n" , middle );
+            break;
+        }
+    }
+
+    if( left > right )
+        printf( "\nDon't exist\n" );
+
+    free(ar);
+    return 0;
+}
+
+
+I.4
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int *ar;
+int length;
+int i;
+int j;
+
+void swap( int * a, int * b );
+
+int main()
+{
+    printf("Enter the length: \n");
+    scanf( "%d" , &length );
+
+    ar = (int *) malloc( length * sizeof( int ) );
+
+    printf( "Enter the sequence: \n" );
+    for( i = 0 ; i < length ; i++ )
+        scanf( "%d" , (ar + i) );
+
+    for( i = 0 ; i < length ; i++ )
+        for( j = i + 1 ; j < length ; j++ )
+        {
+            if( *(ar + i) > *(ar + j) )
+                swap( (ar + i) , (ar + j) );
+        }
+
+    printf( "The sequence sorted: \n" );
+    for( i = 0 ; i < length ; i++ )
+        printf( "%d " , *(ar + i) );
+
+    return 0;
+}
+
+void swap( int * a, int * b )
+{
+    int aux;
+
+    aux = *a;
+    *a = *b;
+    *b = aux;
+}
+
+I.5
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct rando{
+    int no;
+    struct rando *next;
+};
+
+int i;
+void display( struct rando * p );
+
+int main()
+{
+    struct rando * p = (struct rando *)malloc( sizeof( struct rando) );
+    p -> next = NULL;
+    p -> no = rand() % 33;
+
+    struct rando * head = p;
+
+    for ( i = 0; i < 7 ; i++ )
+    {
+        struct rando * newEl = (struct rando *)malloc( sizeof( struct rando) );
+        newEl -> no = rand() % 33;
+        p -> next = newEl;
+
+        newEl -> next = NULL;
+        p = newEl;
+    }
+
+    printf ( "The numbers are : ");
+    display( head );
+
+
+    p = head;
+
+    while( p )
+    {
+        struct rando * arrow = p;
+        while( arrow )
+        {
+            if( arrow -> no  <  p -> no )
+            {
+                int aux = arrow -> no;
+                arrow -> no = p -> no;
+                p -> no = aux;
+            }
+
+            arrow = arrow -> next;
+        }
+
+        p = p -> next;
+    }
+
+    printf( "\n\nAfter sorting:" );
+    display( head );
+
+    while( head )
+    {
+        struct rando * nw = head -> next;
+        free(head);
+        head = nw;
+    }
+
+    return 0;
+}
+
+void display( struct rando * p )
+{
+    while ( p )
+    {
+        printf( "\n %d ", p -> no );
+        p = p -> next;
+    }
+}
+
+II.3
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int *arr;
+int length;
+int i;
+
+void swap( int *a, int *b );
+void quickSort( int *arr , int first , int last );
+
+int main()
+{
+    printf( "Enter the length: \n" );
+    scanf( "%d" , &length );
+
+    arr = (int *) malloc( length * sizeof( int ) );
+
+    printf( "Enter the numbers: \n" );
+    for( i = 0 ; i < length ; i++ )
+        scanf( "%d" , arr + i );
+
+    quickSort( arr , 0 , length - 1 );
+
+    printf( "\n" );
+    for( i = 0 ; i < length ; i++ )
+        printf( "%d " , *(arr + i ) );
+
+    return 0;
+}
+void swap( int *a, int *b )
+{
+    int aux;
+
+    aux = *a;
+    *a = *b;
+    *b = aux;
+}
+
+void quickSort( int *arr , int first , int last )
+{
+    int i;
+    int j;
+    int arrow;
+
+    i = first;
+    j = last;
+    arrow = arr[(first + last) / 2];
+
+    while( i <= j )
+    {
+        while( arr[i] < arrow )
+            i++;
+        while( arr[j] > arrow )
+            j--;
+
+        if( i <= j )
+        {
+            swap( (arr + i) , (arr + j) );
+            i++;
+            j--;
+        }
+    }
+
+    if( first < j )
+        quickSort( arr , first , j );
+    if( i < last )
+        quickSort( arr , i , last );
+}
+
