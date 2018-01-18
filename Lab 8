@@ -1,0 +1,236 @@
+Lab 8 I.1
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct portocala
+{
+    int no;
+    struct portocala * next;
+};
+
+int i;
+int searched;
+int contor = 0;
+
+int countf ( struct portocala * p );
+
+int main()
+{
+    struct portocala * p = (struct portocala *) malloc( sizeof( struct portocala) );
+    p -> next = NULL;
+
+    struct portocala * head = p;
+    struct portocala * newEl;
+
+    for ( i = 0 ; i < 10 ; i++ )
+    {
+        newEl = (struct portocala *) malloc( sizeof( struct portocala) );
+        newEl -> no = rand() % 10;
+        newEl -> next = NULL;
+        p -> next = newEl;
+        p = newEl;
+    }
+
+    p = head;
+
+    for ( i = 0 ; i < 10 ; i++ )
+    {
+        p = p -> next;
+        printf ( "\n %d ", p -> no );
+    }
+
+    printf ( "\n Enter the searched number: " );
+    scanf ( "%d", &searched );
+
+    p = head;
+
+    printf ( "\n The number of appearances is:  %d \n", countf( p ) );
+
+    while( head -> next )
+    {
+        p = head -> next;
+        free( head );
+        head = p;
+    }
+
+    return 0;
+}
+
+int countf ( struct portocala * p )
+{
+    int contor = 0;
+
+    while ( p -> next )
+    {
+        p = p -> next;
+        if ( p -> no == searched )
+            contor++;
+    }
+
+    return contor;
+}
+I.2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct position
+{
+    int info;
+    struct position * next;
+};
+
+int i;
+int index;
+
+void getNth ( struct position * p );
+
+int main()
+{
+    struct position * arrow = ( struct position *) malloc( sizeof( struct position) );
+    arrow -> next = NULL;
+
+    struct position * head = arrow;
+    struct position * newnew;
+
+    for ( i = 0 ; i < 12 ; i++ )
+    {
+        newnew = ( struct position *) malloc ( sizeof( struct position) );
+        newnew -> info = rand() % 50;
+        newnew -> next = NULL;
+        arrow -> next = newnew;
+        arrow = newnew;
+    }
+
+    arrow = head;
+    for ( i = 0 ; i < 12 ; i++ )
+    {
+        arrow = arrow -> next;
+        printf ( "\n%d", arrow -> info );
+    }
+
+    printf ( "\nEnter the index position: ");
+    scanf ( "%d", &index );
+
+    arrow = head;
+
+    getNth ( arrow );
+
+    while( head -> next )
+    {
+        arrow = head -> next;
+        free( head );
+        head = arrow;
+    }
+
+    return 0;
+}
+
+void getNth ( struct position * p )
+{
+    int i;
+    int ok = 1;
+
+    for ( i = 0 ; i < index ; i++ )
+    {
+        p = p -> next;
+        if ( p -> next == NULL && i >= index )
+        {
+            ok = 0;
+            break;
+        }
+    }
+
+    if ( ok )
+        printf ( "\nThe data value stored in the node at that index position is : %d \n ", p -> info );
+    else
+        printf ( "\nThe list is shortest then this index! \n ");
+}
+
+I.4
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct stacck
+{
+    int info;
+    struct stacck * next;
+};
+
+void Push ( struct stacck ** p );
+void Pop( struct stacck ** head );
+void Afisare ( struct stacck * p );
+
+int press;
+int i;
+
+int main()
+{
+    struct stacck * p = ( struct stacck*) malloc( sizeof( struct stacck) );
+    p -> next = NULL;
+
+    struct stacck ** pp = &p;
+
+    for ( i=0 ; ; i++ )
+    {
+        printf ( "\nIf you want to add a new value, press 1\n If you want to delete a value, press 2\n" );
+        scanf ( "%d", &press );
+
+        if ( press == 1 )
+        {
+            Push( pp );
+            Afisare ( p );
+            printf ( "\n" );
+        }
+        if ( press == 2 )
+        {
+            Pop( pp );
+            Afisare ( p );
+            printf ( "\n" );
+        }
+    }
+
+    return 0;
+}
+
+void Push( struct stacck ** p )
+{
+    struct stacck * newEl = (struct stacck *) malloc( sizeof( struct stacck) );
+
+    printf ( "\nEnter the new value: ");
+    scanf ( "%d", &newEl -> info);
+
+    newEl -> next = *p ;
+    *p = newEl;
+}
+
+void Pop( struct stacck ** head )
+{
+    struct stacck * r;
+    r = *head;
+
+    if ( r -> next )
+    {
+        *head = r -> next ;
+        printf ( "\n You delete the node with the value : %d \n", r -> info );
+        free (r);
+    }
+    else
+        printf ("\nAttention! Empty list!\n");
+}
+
+void Afisare ( struct stacck * p )
+{
+    printf ( "\n Now, the stack looks like : ");
+
+    if ( p -> next == NULL )
+        printf( "\nEmpty list!\n" );
+
+    while ( p -> next )
+    {
+        printf ( "\n%d " , p -> info );
+        p = p -> next;
+    }
+}
