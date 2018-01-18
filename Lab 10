@@ -1,0 +1,120 @@
+LAB 10 I.1
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+int main()
+{
+      FILE *fp1, *fp2;
+      char ch;
+      fp1 = fopen("source.txt", "r");
+      if (fp1 == NULL)
+      {
+            puts("File does not exist..");
+            exit(1);
+      }
+      fp2 = fopen("target.txt", "w");
+
+
+      while((ch=fgetc(fp1))!=EOF)
+      {
+            ch = toupper(ch);
+            fputc(ch,fp2);
+      }
+
+      return 0;
+}
+
+I.3
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main()
+{
+ FILE *fp;
+ char filename[100];
+ char ch;
+ int linecount;
+
+
+ linecount = 0;
+
+
+
+  printf("Enter a filename :");
+  gets(filename);
+
+
+   fp = fopen(filename,"r");
+
+
+   if ( fp )
+   {
+	   while ((ch=getc(fp)) != EOF) {
+
+
+		   if (ch == '\n')
+                ++linecount;
+
+
+
+	   }
+
+
+    }
+   else
+      {
+         printf("Failed to open the file\n");
+        }
+
+    printf("Lines : %d \n", linecount);
+
+getchar();
+return(0);
+}
+
+I.4
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main()
+{
+ FILE *fp;
+ char filename[100];
+ char ch;
+ int  charcount;
+
+
+ charcount = 0;
+
+
+  printf("Enter a filename :");
+  gets(filename);
+
+
+   fp = fopen(filename,"r");
+
+
+   if ( fp )
+   {
+	   while ((ch=getc(fp)) != EOF) {
+
+		    if (ch != ' ' && ch != '\n')
+                ++charcount;
+
+                  }
+   }
+   else
+      {
+         printf("Failed to open the file\n");
+        }
+
+    printf("Char : %d \n", charcount );
+
+getchar();
+return(0);
+}
